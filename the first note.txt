@@ -94,5 +94,19 @@ hello.c     hello.i  hello.s  hello.o hello
         优先级
         运算符的特殊性
             %：要求操作数为整型
+            = 与 ==
+            逻辑运算符的短路特性 ||  &&
+            a -= a *= a += 3;  右结合：自右向左
+            ？：
+            sizeof()
         位运算的重要性
+            >> << | & ^ ~
+            将操作数中第n位置1，其他位不变：num = num ｜1<<n;
+            将操作数中第n位清0，其他位不变：num = num $ ~(1<<n);
+            测试第n位：if(num & 1<<n)
+        三、输入、输出专题
+input & output -> I/O
+1、格式化输入输出函数：scanf, printf
+2、字符输入输出函数：getchar, putchar
+3、字符串输入输出函数：gets(!)-->fgets()，puts()
 
