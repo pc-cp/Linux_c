@@ -109,4 +109,95 @@ input & output -> I/O
 1、格式化输入输出函数：scanf, printf
 2、字符输入输出函数：getchar, putchar
 3、字符串输入输出函数：gets(!)-->fgets()，puts()
+        四、流程控制
+1、顺序、选择、循环
+2、简单结构与复杂结构：自然流程（有限状态机）
+顺序：语句逐句执行
+选择：出现了一种以上的情况
+循环：在某个条件成立的情况下，重复执行某个动作
 
+关键字：
+选择：if-else、switch-case
+循环：while、do-while、for、if-goto
+辅助控制：continue、break
+
+详解：
+if-else：
+格式：
+    if(exp)
+        cmd；
+
+    if(exp)
+        cmd1;
+    else
+        cmd2;
+注意：else只和离它最近的if相匹配
+
+详解：
+switch-case：
+语法格式：
+    switch(exp)
+    {
+        case 常量表达式：
+            break；
+        case 常量表达式：
+            break；
+        default://上面选项都不符合的时候执行
+            break;
+    }
+详解：
+while、do-while、for、if-goto
+语法格式：
+    while:（最少执行次数为0）
+    while(exp)：
+        loop;
+
+    do-while：有些事情只有做完才知道结果
+        do
+        {
+            loop;
+        }while(exp);
+    
+    for：
+        for(exp1; exp2; exp3)
+            loop;
+
+    if-goto:（慎用：goto实现的是无条件的跳转，且不能跨函数跳转）
+
+死循环：
+    while(1);
+    for(;;);
+    杀掉死循环：ctrl+c
+
+辅助控制：break continue
+    while()
+    {
+        ....
+        continue; //break;
+        ....
+    }
+    break：结束本层循环
+    continue：结束本次循环
+//没有简单的程序，只有头脑简单的程序员
+        五、数组
+                构造类型之一，连续存放
+一维数组
+    1、定义
+        [存储类型] 数据类型 标识符[下标];
+    2、初始化
+        不初始化
+        部分初始化
+        全部初始化
+    3、元素引用
+    4、数组名
+    5、数组越界
+二维数组
+    1、定义，初始化
+        [存储类型] 数据类型 标识符[行下标][列下标];
+    2、元素引用
+        数组名[行标][列标];
+    3、存储形式
+        按行存储
+    4、深入理解二维数组
+
+字符数组
