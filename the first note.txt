@@ -213,9 +213,60 @@ while、do-while、for、if-goto
 多维数组
         六、指针
 变量与地址
-    地址：经维    
+    地址：经纬坐标
 指针和指针变量
-    指针变量固定大小与类型无关！
+    int i = 1;          //假设i所在内存地址为       0x2000
+    int *p = &i;        //假设p所在内存地址为       0x3000
+    int **q = &p;       //假设q所在内存地址为       0x4000
+        i   :       //房间名为i中的值---->1
+        &i  :       //房间名为i的房间号---->0x2000
+        p   :       //房间名为p中的值，即房间名为i的房间号---->0x2000
+        &p  :       //房间名为p的房间号---->0x3000
+        *p  :       //首先得到房间名为p中的值，即房间名为i的房间号，再取以房间名为i中的值---->1
+        q   :       //房间名为q中的值，即房间名为p的房间号---->0x3000
+        &q  :       //房间名为q的房间号---->0x4000
+        *q  ：      //首先得到房间名为q中的值，即房间名为p的房间号，再取以房间名为p中的值，即房间名为i的房间号---->0x2000
+        **q :       //首先得到房间名为q中的值，即房间名为p的房间号，再取以房间名为p中的值，即房间名为i的房间号，最后取以房间名为i中的值---->1
+********************
+#include <stdio.h>
+#include <stdlib.h>
+
+        int main()
+{
+    int i = 1;
+    int *p = &i;
+    int **q = &p;
+    
+    printf("  i = %d\n", i);
+    printf(" &i = %p\n", &i);
+    printf("  p = %p\n", p);
+    printf(" &p = %p\n", &p);
+    printf(" *p = %d\n", *p);
+    printf("  q = %p\n", q);
+    printf(" &q = %p\n", &q);
+    printf(" *q = %p\n", *q);
+    printf("**q = %d\n", **q);
+    
+    
+    
+}
+
+     i = 1
+    &i = 0x7ffeecbe569c
+     p = 0x7ffeecbe569c
+    &p = 0x7ffeecbe5690
+    *p = 1
+     q = 0x7ffeecbe5690
+    &q = 0x7ffeecbe5688
+    *q = 0x7ffeecbe569c
+   **q = 1
+
+********************
+
+    指针变量固定大小与类型无关！int类型的指针代表该指针
+    读取int类型这么长的数据作为一个单元，char类型的指针
+    代表该指针读取char类型这么长的数据作为一个单元
+
 直接访问与间接访问
 空指针与野指针
 空类型
@@ -225,22 +276,97 @@ while、do-while、for、if-goto
     &   *   关系运算    ++  --    
 指针与数组
     指针与一维数组
-        a[3] == *(a+3)
+        int a[3];
+        int *p = a;
+        TYPE NAME = VALUE;
+             a[i]  :  a[i] = *(a+i) = *(p+i) = p[i]
+            &a[i]  : &a[i] =    a+i = p+i    = &p[i]
+        a与p的区别：a是常量，p是变量
     指针与二维数组
-    指针与字符数组
-const与指针[****不会]
-    const float pi = 3.14; 
-        //将变量pi常量化，以后变量pi不再改变
-    指针常量
-        指针的指向不能发生变化，而其指向的值可以改变
-    常量指针
-        指针的指向可以发生改变，但是无法通过指针来改变
+        行指针，列指针
+            行指针：每次自增或自减都是以行为单位进行的(数组指针)
+            列指针：每次自增或自减都是以列为单位进行的
+            行指针可以退化成列指针，加*操作！
+    int a[2][3];
+    int (*p)[3] = a;        //p为行指针
+    printf("a = %p\n p = %p\n", a, p);
+    printf("a+1 = %p\n p+1 = %p\n", a+1, p+1);
 
+     a   = 0x7ffee4d3c680
+     p   = 0x7ffee4d3c680
+     a+1 = 0x7ffee4d3c68c
+     p+1 = 0x7ffee4d3c68c
+
+    指针与字符数组
+1、字符指针与字符数组相同点
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    char str[] = "I love china!";
+    char *p = str+7;
+    
+    puts(str);
+    puts(p);        //字符串：以尾0为止
+}
+
+/**
+  I love china!
+  china!
+  */
+2、字符指针与字符数组的不同点
+        字符数组名是地址常量
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char str[] = "hello";
+    printf("sizeof(str) = %lu strlen(str) = %lu\n", sizeof(str), strlen(str));
+    puts(str);
+    strcpy(str, "world");
+    puts(str);
+    
+    char *str1 = "hello";   
+    printf("sizeof(str1) = %lu strlen(str1) = %lu\n", sizeof(str1), strlen(str1));
+    puts(str1);
+    strcpy(str1, "world");      //试图用world来覆盖串常量“hello”的内容空间
+    puts(str1);
+}
+
+/**
+  sizeof(str) = 6 strlen(str) = 5
+  hello
+  world
+  sizeof(str1) = 8 strlen(str1) = 5
+  hello
+  Terminated due to signal: BUS ERROR (10)
+  */
+
+const与指针[****不会]
+    #define PI 3.14             //不检查语法
+    const float pi = 3.14;      //检查语法,将变量pi常量化，以后变量pi不再改变值
+
+    指针常量
+        int *const p;
+        指向的房间号不能变化，但是房间号中的内容可以改变
+        
+    常量指针
+        int const *p;
+        const int *p;
+        指向的房间号可以变化，但是该房间号中的内容无法改变
+
+    双重const
+        const int *cosnt p;
+    
+    简单粗暴的辨别方式：
+        如果先看到const，就把常量念处理，如果看到的是*，就把指针念出来。
 指针数组与数组指针
     数组指针：[存储类型] 数据类型 (*指针)[下标] = 值
         如：int (*p)[3];  -> type name; -> int[3] *p;
     指针数组：[存储类型] 数据类型 * 数组名[长度]
         如：int *arr[3];  -> type name;
-    字符指针和字符数组
 多级指针
 
